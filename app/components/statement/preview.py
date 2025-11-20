@@ -138,15 +138,15 @@ def transaction_table_row(transaction: Transaction) -> rx.Component:
             class_name="p-2 text-[10px] text-gray-600 border-b border-gray-100",
         ),
         rx.el.td(
-            f"{transaction.amount:,.2f}",
+            f"{transaction.amount:.2f}",
             class_name="p-2 text-right text-[10px] text-gray-600 border-b border-gray-100",
         ),
         rx.el.td(
-            f"{transaction.paid:,.2f}",
+            f"{transaction.paid:.2f}",
             class_name="p-2 text-right text-[10px] text-gray-600 border-b border-gray-100",
         ),
         rx.el.td(
-            f"{transaction.amount - transaction.paid:,.2f}",
+            f"{transaction.amount - transaction.paid:.2f}",
             class_name="p-2 text-right text-[10px] text-gray-600 border-b border-gray-100",
         ),
     )

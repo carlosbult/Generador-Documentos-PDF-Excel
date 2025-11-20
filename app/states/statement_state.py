@@ -1,6 +1,7 @@
 import reflex as rx
 from typing import Any
 from datetime import datetime, date
+from pathlib import Path
 import uuid
 import os
 import logging
@@ -75,6 +76,11 @@ class StatementState(rx.State):
             paid=0.0,
         ),
     ]
+
+    def on_load(self):
+        """Initialize date on client load to avoid hydration mismatch."""
+        if not self.statement_date:
+            self.statement_date = datetime.now().strftime("%Y-%m-%d")
 
     @rx.var
     def total_due(self) -> float:
@@ -151,12 +157,12 @@ class StatementState(rx.State):
     async def export_pdf(self):
         self.is_loading = True
         filename = f"Statement_{self.account_number}_{uuid.uuid4().hex[:6]}.pdf"
-        upload_dir = rx.get_upload_dir()
+        upload_dir = Path(".web/public")
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / filename
         try:
             doc = SimpleDocTemplate(
-                file_path,
+                str(file_path),
                 pagesize=letter,
                 rightMargin=30,
                 leftMargin=30,
@@ -305,6 +311,11 @@ class StatementState(rx.State):
             elements.append(t_aging)
             doc.build(elements)
             self.is_loading = False
+
+            # Verify file was created successfully
+            if not file_path.exists():
+                raise FileNotFoundError(f"PDF file was not created: {file_path}")
+
             return rx.download(url=f"/_upload/{filename}")
         except Exception as e:
             self.is_loading = False
@@ -315,7 +326,7 @@ class StatementState(rx.State):
     async def export_excel(self):
         self.is_loading = True
         filename = f"Statement_{self.account_number}_{uuid.uuid4().hex[:6]}.xlsx"
-        upload_dir = rx.get_upload_dir()
+        upload_dir = Path(".web/public")
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / filename
         try:
@@ -374,7 +385,7 @@ class StatementState(rx.State):
             ws.cell(row=row + 1, column=6, value=aging["60"])
             ws.cell(row=row + 1, column=7, value="Total Due")
             ws.cell(row=row + 1, column=8, value=self.total_due)
-            wb.save(file_path)
+            wb.save(str(file_path))
             self.is_loading = False
             return rx.download(url=f"/_upload/{filename}")
         except Exception as e:

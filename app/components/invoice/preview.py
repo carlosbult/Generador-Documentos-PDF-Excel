@@ -13,11 +13,11 @@ def preview_item_row(item: InvoiceItem) -> rx.Component:
             class_name="py-4 text-sm text-gray-600 text-right border-b border-gray-100",
         ),
         rx.el.td(
-            f"${item.unit_price:,.2f}",
+            f"${item.unit_price:.2f}",
             class_name="py-4 text-sm text-gray-600 text-right border-b border-gray-100",
         ),
         rx.el.td(
-            f"${item.amount:,.2f}",
+            f"${item.amount:.2f}",
             class_name="py-4 text-sm text-gray-900 font-semibold text-right border-b border-gray-100",
         ),
     )
@@ -132,7 +132,7 @@ def invoice_preview() -> rx.Component:
                             "Subtotal", class_name="text-sm font-medium text-gray-500"
                         ),
                         rx.el.span(
-                            f"${InvoiceState.subtotal:,.2f}",
+                            f"${InvoiceState.subtotal:.2f}",
                             class_name="text-sm font-semibold text-gray-900",
                         ),
                         class_name="flex justify-between mb-2",
@@ -143,7 +143,7 @@ def invoice_preview() -> rx.Component:
                             class_name="text-sm font-medium text-gray-500",
                         ),
                         rx.el.span(
-                            f"${InvoiceState.tax_amount:,.2f}",
+                            f"${InvoiceState.tax_amount:.2f}",
                             class_name="text-sm font-semibold text-gray-900",
                         ),
                         class_name="flex justify-between mb-4 pb-4 border-b border-gray-100",
@@ -153,7 +153,7 @@ def invoice_preview() -> rx.Component:
                             "Total", class_name="text-lg font-bold text-gray-900"
                         ),
                         rx.el.span(
-                            f"${InvoiceState.total:,.2f}",
+                            f"${InvoiceState.total:.2f}",
                             class_name="text-lg font-bold text-emerald-600",
                         ),
                         class_name="flex justify-between",

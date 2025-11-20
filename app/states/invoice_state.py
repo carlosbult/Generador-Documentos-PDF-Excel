@@ -1,6 +1,7 @@
 import reflex as rx
 from typing import Any
 from datetime import datetime
+from pathlib import Path
 import uuid
 import logging
 from reportlab.lib import colors
@@ -34,8 +35,8 @@ class InvoiceState(rx.State):
     to_address: str = "Av. Comercial 456"
     to_details: str = "Ciudad Cliente, País"
     invoice_number: str = "INV-2024-001"
-    invoice_date: str = datetime.now().strftime("%Y-%m-%d")
-    due_date: str = datetime.now().strftime("%Y-%m-%d")
+    invoice_date: str = ""
+    due_date: str = ""
     items: list[InvoiceItem] = [
         InvoiceItem(
             id="1",
@@ -53,6 +54,13 @@ class InvoiceState(rx.State):
         ),
     ]
     tax_rate: float = 16.0
+
+    def on_load(self):
+        """Initialize dates on client load to avoid hydration mismatch."""
+        if not self.invoice_date:
+            today = datetime.now().strftime("%Y-%m-%d")
+            self.invoice_date = today
+            self.due_date = today
 
     @rx.var
     def subtotal(self) -> float:
@@ -117,12 +125,12 @@ class InvoiceState(rx.State):
     async def export_pdf(self):
         self.is_loading = True
         filename = f"Invoice_{self.invoice_number}_{uuid.uuid4().hex[:6]}.pdf"
-        upload_dir = rx.get_upload_dir()
+        upload_dir = Path(".web/public")
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / filename
         try:
             doc = SimpleDocTemplate(
-                file_path,
+                str(file_path),
                 pagesize=letter,
                 rightMargin=40,
                 leftMargin=40,
@@ -210,6 +218,11 @@ class InvoiceState(rx.State):
             elements.append(t_totals)
             doc.build(elements)
             self.is_loading = False
+
+            # Verify file was created successfully
+            if not file_path.exists():
+                raise FileNotFoundError(f"PDF file was not created: {file_path}")
+
             return rx.download(url=f"/_upload/{filename}")
         except Exception as e:
             self.is_loading = False
@@ -220,7 +233,7 @@ class InvoiceState(rx.State):
     async def export_excel(self):
         self.is_loading = True
         filename = f"Invoice_{self.invoice_number}_{uuid.uuid4().hex[:6]}.xlsx"
-        upload_dir = rx.get_upload_dir()
+        upload_dir = Path(".web/public")
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / filename
         try:
@@ -273,7 +286,7 @@ class InvoiceState(rx.State):
             ws.column_dimensions["A"].width = 40
             ws.column_dimensions["C"].width = 15
             ws.column_dimensions["D"].width = 15
-            wb.save(file_path)
+            wb.save(str(file_path))
             self.is_loading = False
             return rx.download(url=f"/_upload/{filename}")
         except Exception as e:
