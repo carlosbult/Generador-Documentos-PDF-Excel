@@ -28,52 +28,52 @@ class InvoiceState(rx.State):
     """State for the Invoice document."""
 
     is_loading: bool = False
-    from_name: str = "Tu Empresa S.A."
-    from_address: str = "Calle Principal 123"
-    from_details: str = "Ciudad, País, CP 10001"
-    from_email: str = "contacto@tuempresa.com"
-    from_phone: str = "+1 234 567 890"
+    from_name: str = "Nosglobal Logistic"
+    from_address: str = "Av. Principal 1000, Torre A, Piso 5"
+    from_details: str = "Caracas, Distrito Capital, 1010"
+    from_email: str = "info@nosglobal.com"
+    from_phone: str = "+58 212 123 4567"
     to_name: str = "Cliente Ejemplo"
     to_company: str = "Empresa Cliente Ltda."
     to_address: str = "Av. Comercial 456"
-    to_details: str = "Ciudad Cliente, País"
+    to_details: str = "Caracas, Venezuela"
     # Información fiscal
     from_tax_id: str = "J-123456789"  # RIF/Cédula del emisor
     to_tax_id: str = "V-987654321"    # RIF/Cédula del cliente
     
     # Información de pago
     payment_method: str = "Transferencia Bancaria"
-    bank_account: str = "1234-5678-9012-3456"
-    bank_name: str = "Banco Nacional"
+    bank_account: str = "0102-0000-0000-0000-1234"
+    bank_name: str = "Banco Provincial"
     
     # Información adicional
-    terms_conditions: str = "Pago contra entrega. Validez 30 días."
+    terms_conditions: str = "Pago contra entrega. Validez 30 días. Los precios están expresados en bolívares."
     notes: str = ""
     authorized_by: str = ""
-    logo_url: str = ""
+    logo_url: str = "/nosglobal-logo.png"
     
-    invoice_number: str = "INV-2024-001"
+    invoice_number: str = "INV-NOS-2024-001"
     invoice_date: str = ""
     due_date: str = ""
     items: list[InvoiceItem] = [
         InvoiceItem(
             id="1",
-            code="SRV-001",
-            description="Servicios de Consultoría",
-            quantity=10,
-            unit_price=85.0,
+            code="LOG-001",
+            description="Servicio de Transporte Internacional",
+            quantity=1,
+            unit_price=2500.0,
             discount=0.0,
-            amount=850.0,
+            amount=2500.0,
             tax_rate=0.0,
         ),
         InvoiceItem(
             id="2",
-            code="DEV-002",
-            description="Desarrollo Web Frontend",
-            quantity=1,
-            unit_price=1200.0,
+            code="ALM-002",
+            description="Almacenamiento y Manejo de Carga",
+            quantity=30,
+            unit_price=85.0,
             discount=0.0,
-            amount=1200.0,
+            amount=2550.0,
             tax_rate=0.0,
         ),
     ]

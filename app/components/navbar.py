@@ -10,7 +10,7 @@ def navbar() -> rx.Component:
                     class_name="bg-blue-600 p-1.5 rounded-lg",
                 ),
                 rx.el.span(
-                    "DocuGen",
+                    "Nosglobal Logistic",
                     class_name="text-lg font-bold text-gray-900 tracking-tight",
                 ),
                 class_name="flex items-center gap-3",

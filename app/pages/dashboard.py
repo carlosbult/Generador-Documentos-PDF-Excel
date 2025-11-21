@@ -10,7 +10,7 @@ def dashboard() -> rx.Component:
             rx.el.div(
                 rx.el.div(
                     rx.el.span(
-                        "Sistema de Gestión",
+                        "Nosglobal Logistic",
                         class_name="text-blue-600 font-semibold tracking-wider uppercase text-xs mb-2 block",
                     ),
                     rx.el.h1(
