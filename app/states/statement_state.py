@@ -77,6 +77,7 @@ class StatementState(rx.State):
         ),
     ]
 
+    @rx.event
     def on_load(self):
         """Initialize date on client load to avoid hydration mismatch."""
         if not self.statement_date:
@@ -162,7 +163,7 @@ class StatementState(rx.State):
         file_path = upload_dir / filename
         try:
             doc = SimpleDocTemplate(
-                str(file_path),
+                file_path,
                 pagesize=letter,
                 rightMargin=30,
                 leftMargin=30,
@@ -311,12 +312,9 @@ class StatementState(rx.State):
             elements.append(t_aging)
             doc.build(elements)
             self.is_loading = False
-
-            # Verify file was created successfully
             if not file_path.exists():
                 raise FileNotFoundError(f"PDF file was not created: {file_path}")
-
-            return rx.download(url=f"/_upload/{filename}")
+            return rx.download(url=f"/{filename}", filename=filename)
         except Exception as e:
             self.is_loading = False
             logging.exception(f"PDF Generation Error: {e}")
@@ -385,9 +383,9 @@ class StatementState(rx.State):
             ws.cell(row=row + 1, column=6, value=aging["60"])
             ws.cell(row=row + 1, column=7, value="Total Due")
             ws.cell(row=row + 1, column=8, value=self.total_due)
-            wb.save(str(file_path))
+            wb.save(file_path)
             self.is_loading = False
-            return rx.download(url=f"/_upload/{filename}")
+            return rx.download(url=f"/{filename}", filename=filename)
         except Exception as e:
             self.is_loading = False
             logging.exception(f"Excel Generation Error: {e}")
