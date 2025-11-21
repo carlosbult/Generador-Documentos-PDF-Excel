@@ -5,9 +5,10 @@ def navbar() -> rx.Component:
     return rx.el.nav(
         rx.el.div(
             rx.el.a(
-                rx.el.div(
-                    rx.icon("files", class_name="w-6 h-6 text-white"),
-                    class_name="bg-blue-600 p-1.5 rounded-lg",
+                rx.el.img(
+                    src="/nosglobal-logo.png",
+                    alt="Nosglobal Logistic",
+                    class_name="w-8 h-8 object-contain",
                 ),
                 rx.el.span(
                     "Nosglobal Logistic",
