@@ -163,7 +163,7 @@ class StatementState(rx.State):
         file_path = upload_dir / filename
         try:
             doc = SimpleDocTemplate(
-                file_path,
+                str(file_path),
                 pagesize=letter,
                 rightMargin=30,
                 leftMargin=30,

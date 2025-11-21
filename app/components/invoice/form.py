@@ -36,6 +36,17 @@ def item_row(item: InvoiceItem, index: int) -> rx.Component:
         ),
         rx.el.div(
             rx.el.label(
+                "Código", class_name="text-xs font-medium text-gray-500 mb-1"
+            ),
+            rx.el.input(
+                on_change=lambda v: InvoiceState.update_item(index, "code", v),
+                class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm",
+                default_value=item.code,
+                placeholder="SKU-001",
+            ),
+        ),
+        rx.el.div(
+            rx.el.label(
                 "Descripción", class_name="text-xs font-medium text-gray-500 mb-1"
             ),
             rx.el.input(
@@ -43,7 +54,7 @@ def item_row(item: InvoiceItem, index: int) -> rx.Component:
                 class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm",
                 default_value=item.description,
             ),
-            class_name="col-span-4",
+            class_name="col-span-3",
         ),
         rx.el.div(
             rx.el.label("Cant.", class_name="text-xs font-medium text-gray-500 mb-1"),
@@ -64,13 +75,23 @@ def item_row(item: InvoiceItem, index: int) -> rx.Component:
             ),
         ),
         rx.el.div(
+            rx.el.label("Desc.", class_name="text-xs font-medium text-gray-500 mb-1"),
+            rx.el.input(
+                type="number",
+                on_change=lambda v: InvoiceState.update_item(index, "discount", v),
+                class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm",
+                default_value=item.discount.to_string(),
+                step="0.01",
+            ),
+        ),
+        rx.el.div(
             rx.el.label("Total", class_name="text-xs font-medium text-gray-500 mb-1"),
             rx.el.div(
                 f"${item.amount:,.2f}",
                 class_name="px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-right font-medium text-gray-700",
             ),
         ),
-        class_name="grid grid-cols-[auto_4fr_1fr_1.5fr_1.5fr] gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
+        class_name="grid grid-cols-[auto_1fr_3fr_1fr_1fr_1fr_1.5fr] gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
     )
 
 
@@ -91,6 +112,12 @@ def invoice_form() -> rx.Component:
                     input_group(
                         "Teléfono", InvoiceState.from_phone, "from_phone", "tel"
                     ),
+                    input_group(
+                        "RIF/Cédula", InvoiceState.from_tax_id, "from_tax_id"
+                    ),
+                    input_group(
+                        "Logo URL", InvoiceState.logo_url, "logo_url"
+                    ),
                     class_name="grid grid-cols-2 gap-4",
                 ),
                 class_name="grid grid-cols-1 gap-4",
@@ -105,6 +132,9 @@ def invoice_form() -> rx.Component:
                 input_group("Dirección", InvoiceState.to_address, "to_address"),
                 input_group(
                     "Detalles Ubicación", InvoiceState.to_details, "to_details"
+                ),
+                input_group(
+                    "RIF/Cédula", InvoiceState.to_tax_id, "to_tax_id"
                 ),
                 class_name="grid grid-cols-1 md:grid-cols-2 gap-4",
             ),
@@ -131,6 +161,53 @@ def invoice_form() -> rx.Component:
                 class_name="grid grid-cols-2 gap-4",
             ),
             class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200",
+        ),
+        rx.el.div(
+            form_header("Información de Pago", "credit-card"),
+            rx.el.div(
+                input_group(
+                    "Método de Pago", InvoiceState.payment_method, "payment_method"
+                ),
+                input_group(
+                    "Nombre del Banco", InvoiceState.bank_name, "bank_name"
+                ),
+                input_group(
+                    "Cuenta Bancaria", InvoiceState.bank_account, "bank_account"
+                ),
+                class_name="grid grid-cols-1 gap-4",
+            ),
+            class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200",
+        ),
+        rx.el.div(
+            form_header("Términos y Condiciones", "file-text"),
+            rx.el.div(
+                rx.el.label(
+                    "Términos y Condiciones",
+                    class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
+                ),
+                rx.el.textarea(
+                    on_change=lambda v: InvoiceState.set_field("terms_conditions", v),
+                    class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm h-24 resize-none",
+                    default_value=InvoiceState.terms_conditions,
+                ),
+                class_name="mb-4",
+            ),
+            rx.el.div(
+                rx.el.label(
+                    "Notas Adicionales",
+                    class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
+                ),
+                rx.el.textarea(
+                    on_change=lambda v: InvoiceState.set_field("notes", v),
+                    class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm h-20 resize-none",
+                    default_value=InvoiceState.notes,
+                ),
+                class_name="mb-4",
+            ),
+            input_group(
+                "Autorizado por", InvoiceState.authorized_by, "authorized_by"
+            ),
+            class_name="space-y-4",
         ),
         rx.el.div(
             rx.el.div(
