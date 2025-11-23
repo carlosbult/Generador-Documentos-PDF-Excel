@@ -38,6 +38,11 @@ def navbar() -> rx.Component:
                     href="/warehouse-receipt",
                     class_name="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50",
                 ),
+                rx.el.a(
+                    "Cotización",
+                    href="/quotation",
+                    class_name="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50",
+                ),
                 class_name="flex gap-1 items-center",
             ),
             class_name="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between",

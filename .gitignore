@@ -7,3 +7,12 @@ assets/external/
 .states/
 __pycache__/
 /app/__pycache__/
+
+# macOS
+._*
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*

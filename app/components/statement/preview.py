@@ -244,7 +244,6 @@ def statement_preview() -> rx.Component:
             ),
             aging_table(),
             class_name="bg-white p-8 shadow-lg min-h-[800px] w-full max-w-[816px] mx-auto border border-gray-200",
-            id="print-area",
         ),
         class_name="bg-gray-500/10 p-8 rounded-2xl overflow-auto flex justify-center",
     )
