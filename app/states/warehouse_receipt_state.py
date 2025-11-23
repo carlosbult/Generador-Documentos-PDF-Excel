@@ -353,7 +353,18 @@ class WarehouseReceiptState(rx.State):
             self.is_loading = False
             if not file_path.exists():
                 raise FileNotFoundError(f"PDF file was not created: {file_path}")
-            return rx.download(url=f"/{filename}", filename=filename)
+
+            # Read file data and pass directly to download
+            with open(file_path, "rb") as f:
+                pdf_data = f.read()
+
+            # Clean up temporary file
+            try:
+                file_path.unlink()
+            except Exception as e:
+                logging.warning(f"Could not delete temporary file: {e}")
+
+            return rx.download(data=pdf_data, filename=filename)
         except Exception as e:
             self.is_loading = False
             logging.exception(f"PDF Generation Error: {e}")
@@ -468,7 +479,18 @@ class WarehouseReceiptState(rx.State):
 
             wb.save(file_path)
             self.is_loading = False
-            return rx.download(url=f"/{filename}", filename=filename)
+
+            # Read file data and pass directly to download
+            with open(file_path, "rb") as f:
+                excel_data = f.read()
+
+            # Clean up temporary file
+            try:
+                file_path.unlink()
+            except Exception as e:
+                logging.warning(f"Could not delete temporary file: {e}")
+
+            return rx.download(data=excel_data, filename=filename)
         except Exception as e:
             self.is_loading = False
             logging.exception(f"Excel Generation Error: {e}")
