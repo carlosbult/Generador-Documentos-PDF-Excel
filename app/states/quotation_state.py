@@ -452,7 +452,17 @@ class QuotationState(rx.State):
             doc.build(elements)
             self.is_loading = False
 
-            return rx.download(url=f"/{filename}", filename=filename)
+            # Read file data and pass directly to download
+            with open(file_path, "rb") as f:
+                pdf_data = f.read()
+
+            # Clean up temporary file
+            try:
+                file_path.unlink()
+            except Exception as e:
+                logging.warning(f"Could not delete temporary file: {e}")
+
+            return rx.download(data=pdf_data, filename=filename)
 
         except Exception as e:
             self.is_loading = False
@@ -588,7 +598,17 @@ class QuotationState(rx.State):
             wb.save(file_path)
             self.is_loading = False
 
-            return rx.download(url=f"/{filename}", filename=filename)
+            # Read file data and pass directly to download
+            with open(file_path, "rb") as f:
+                excel_data = f.read()
+
+            # Clean up temporary file
+            try:
+                file_path.unlink()
+            except Exception as e:
+                logging.warning(f"Could not delete temporary file: {e}")
+
+            return rx.download(data=excel_data, filename=filename)
 
         except Exception as e:
             self.is_loading = False
