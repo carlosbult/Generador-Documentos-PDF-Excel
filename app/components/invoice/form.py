@@ -11,7 +11,7 @@ def form_header(title: str, icon: str) -> rx.Component:
 
 
 def input_group(
-    label: str, value: str, field_name: str, type_: str = "text"
+    label: str, value: str, field_name: str, type_: str = "text", placeholder: str = ""
 ) -> rx.Component:
     return rx.el.div(
         rx.el.label(
@@ -23,6 +23,7 @@ def input_group(
             type=type_,
             class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm",
             default_value=value,
+            placeholder=placeholder,
         ),
     )
 
@@ -127,30 +128,31 @@ def invoice_form() -> rx.Component:
         rx.el.div(
             form_header("Datos del Cliente", "user"),
             rx.el.div(
-                input_group("Nombre Contacto", InvoiceState.to_name, "to_name"),
-                input_group("Empresa", InvoiceState.to_company, "to_company"),
-                input_group("Dirección", InvoiceState.to_address, "to_address"),
+                input_group("Nombre Contacto", InvoiceState.to_name, "to_name", placeholder="Cliente Ejemplo"),
+                input_group("Empresa", InvoiceState.to_company, "to_company", placeholder="Empresa Cliente Ltda."),
+                input_group("Dirección", InvoiceState.to_address, "to_address", placeholder="Av. Comercial 456"),
                 input_group(
-                    "Detalles Ubicación", InvoiceState.to_details, "to_details"
+                    "Detalles Ubicación", InvoiceState.to_details, "to_details", placeholder="Caracas, Venezuela"
                 ),
                 input_group(
-                    "RIF/Cédula", InvoiceState.to_tax_id, "to_tax_id"
+                    "RIF/Cédula", InvoiceState.to_tax_id, "to_tax_id", placeholder="V-987654321"
                 ),
                 class_name="grid grid-cols-1 md:grid-cols-2 gap-4",
             ),
             class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200",
         ),
         rx.el.div(
-            form_header("Detalles de Factura", "file-text"),
+            form_header("Detalles de Nota de entrega", "file-text"),
             rx.el.div(
                 input_group(
-                    "Número Factura", InvoiceState.invoice_number, "invoice_number"
+                    "Número Nota de entrega", InvoiceState.invoice_number, "invoice_number", placeholder="INV-NOS-2024-001"
                 ),
                 input_group(
                     "Impuesto %",
                     InvoiceState.tax_rate.to_string(),
                     "tax_rate",
                     "number",
+                    placeholder="16.0",
                 ),
                 input_group(
                     "Fecha Emisión", InvoiceState.invoice_date, "invoice_date", "date"
@@ -166,13 +168,13 @@ def invoice_form() -> rx.Component:
             form_header("Información de Pago", "credit-card"),
             rx.el.div(
                 input_group(
-                    "Método de Pago", InvoiceState.payment_method, "payment_method"
+                    "Método de Pago", InvoiceState.payment_method, "payment_method", placeholder="Transferencia Bancaria"
                 ),
                 input_group(
-                    "Nombre del Banco", InvoiceState.bank_name, "bank_name"
+                    "Nombre del Banco", InvoiceState.bank_name, "bank_name", placeholder="Banco Provincial"
                 ),
                 input_group(
-                    "Cuenta Bancaria", InvoiceState.bank_account, "bank_account"
+                    "Cuenta Bancaria", InvoiceState.bank_account, "bank_account", placeholder="0102-0000-0000-0000-1234"
                 ),
                 class_name="grid grid-cols-1 gap-4",
             ),
@@ -189,6 +191,7 @@ def invoice_form() -> rx.Component:
                     on_change=lambda v: InvoiceState.set_field("terms_conditions", v),
                     class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm h-24 resize-none",
                     default_value=InvoiceState.terms_conditions,
+                    placeholder="Pago contra entrega. Validez 30 días. Los precios están expresados en bolívares.",
                 ),
                 class_name="mb-4",
             ),
@@ -201,17 +204,18 @@ def invoice_form() -> rx.Component:
                     on_change=lambda v: InvoiceState.set_field("notes", v),
                     class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-sm h-20 resize-none",
                     default_value=InvoiceState.notes,
+                    placeholder="Notas adicionales...",
                 ),
                 class_name="mb-4",
             ),
             input_group(
-                "Autorizado por", InvoiceState.authorized_by, "authorized_by"
+                "Autorizado por", InvoiceState.authorized_by, "authorized_by", placeholder="Juan Pérez - Gerente"
             ),
             class_name="space-y-4",
         ),
         rx.el.div(
             rx.el.div(
-                form_header("Items de Factura", "shopping-cart"),
+                form_header("Items de Nota de entrega", "shopping-cart"),
                 rx.el.button(
                     rx.icon("plus", class_name="w-4 h-4"),
                     rx.el.span("Agregar Item"),

@@ -33,51 +33,30 @@ class InvoiceState(rx.State):
     from_details: str = "Caracas, Distrito Capital, 1010"
     from_email: str = "info@nosglobal.com"
     from_phone: str = "+58 212 123 4567"
-    to_name: str = "Cliente Ejemplo"
-    to_company: str = "Empresa Cliente Ltda."
-    to_address: str = "Av. Comercial 456"
-    to_details: str = "Caracas, Venezuela"
+    to_name: str = ""
+    to_company: str = ""
+    to_address: str = ""
+    to_details: str = ""
     # Información fiscal
     from_tax_id: str = "J-123456789"  # RIF/Cédula del emisor
-    to_tax_id: str = "V-987654321"    # RIF/Cédula del cliente
-    
+    to_tax_id: str = ""    # RIF/Cédula del cliente
+
     # Información de pago
-    payment_method: str = "Transferencia Bancaria"
-    bank_account: str = "0102-0000-0000-0000-1234"
-    bank_name: str = "Banco Provincial"
-    
+    payment_method: str = ""
+    bank_account: str = ""
+    bank_name: str = ""
+
     # Información adicional
-    terms_conditions: str = "Pago contra entrega. Validez 30 días. Los precios están expresados en bolívares."
+    terms_conditions: str = ""
     notes: str = ""
     authorized_by: str = ""
     logo_url: str = "/nosglobal-logo.png"
-    
-    invoice_number: str = "INV-NOS-2024-001"
+
+    invoice_number: str = ""
     invoice_date: str = ""
     due_date: str = ""
-    items: list[InvoiceItem] = [
-        InvoiceItem(
-            id="1",
-            code="LOG-001",
-            description="Servicio de Transporte Internacional",
-            quantity=1,
-            unit_price=2500.0,
-            discount=0.0,
-            amount=2500.0,
-            tax_rate=0.0,
-        ),
-        InvoiceItem(
-            id="2",
-            code="ALM-002",
-            description="Almacenamiento y Manejo de Carga",
-            quantity=30,
-            unit_price=85.0,
-            discount=0.0,
-            amount=2550.0,
-            tax_rate=0.0,
-        ),
-    ]
-    tax_rate: float = 16.0
+    items: list[InvoiceItem] = []
+    tax_rate: float = 0.0
 
     @rx.event
     def on_load(self):
@@ -161,7 +140,7 @@ class InvoiceState(rx.State):
     @rx.event
     async def export_pdf(self):
         self.is_loading = True
-        filename = f"Invoice_{self.invoice_number}_{uuid.uuid4().hex[:6]}.pdf"
+        filename = f"NotaDeEntrega_{self.invoice_number}_{uuid.uuid4().hex[:6]}.pdf"
         upload_dir = Path(".web/public")
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / filename
@@ -183,7 +162,7 @@ class InvoiceState(rx.State):
                         styles["Normal"],
                     ),
                     Paragraph(
-                        f"<font size=24><b>FACTURA</b></font><br/><br/><b>No:</b> {self.invoice_number}<br/><b>Fecha:</b> {self.invoice_date}<br/><b>Vence:</b> {self.due_date}",
+                        f"<font size=24><b>NOTA DE ENTREGA</b></font><br/><br/><b>No:</b> {self.invoice_number}<br/><b>Fecha:</b> {self.invoice_date}<br/><b>Vence:</b> {self.due_date}",
                         styles["Normal"],
                     ),
                 ]
@@ -199,7 +178,7 @@ class InvoiceState(rx.State):
             )
             elements.append(t_header)
             elements.append(Spacer(1, 30))
-            elements.append(Paragraph("<b>FACTURAR A:</b>", styles["Heading4"]))
+            elements.append(Paragraph("<b>ENTREGAR A:</b>", styles["Heading4"]))
             elements.append(
                 Paragraph(
                     f"{self.to_name}<br/>{self.to_company}<br/>{self.to_address}<br/>{self.to_details}<br/>RIF/Cédula: {self.to_tax_id}",
@@ -319,14 +298,14 @@ class InvoiceState(rx.State):
     @rx.event
     async def export_excel(self):
         self.is_loading = True
-        filename = f"Invoice_{self.invoice_number}_{uuid.uuid4().hex[:6]}.xlsx"
+        filename = f"NotaDeEntrega_{self.invoice_number}_{uuid.uuid4().hex[:6]}.xlsx"
         upload_dir = Path(".web/public")
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / filename
         try:
             wb = Workbook()
             ws = wb.active
-            ws.title = "Factura"
+            ws.title = "Nota de entrega"
             title_font = Font(bold=True, size=16)
             header_font = Font(bold=True)
             gray_fill = PatternFill(
@@ -339,12 +318,12 @@ class InvoiceState(rx.State):
             ws["A4"] = self.from_email
             ws["A5"] = f"RIF/Cédula: {self.from_tax_id}"
             ws["A6"] = self.from_phone
-            ws["E1"] = "FACTURA"
+            ws["E1"] = "NOTA DE ENTREGA"
             ws["E1"].font = title_font
             ws["E2"] = f"No: {self.invoice_number}"
             ws["E3"] = f"Fecha: {self.invoice_date}"
             ws["E4"] = f"Vence: {self.due_date}"
-            ws["A8"] = "FACTURAR A:"
+            ws["A8"] = "ENTREGAR A:"
             ws["A8"].font = header_font
             ws["A9"] = self.to_name
             ws["A10"] = self.to_company

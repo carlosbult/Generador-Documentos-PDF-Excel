@@ -29,8 +29,13 @@ def navbar() -> rx.Component:
                     class_name="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50",
                 ),
                 rx.el.a(
-                    "Factura",
+                    "Nota de entrega",
                     href="/invoice",
+                    class_name="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50",
+                ),
+                rx.el.a(
+                    "Recibo de Almacén",
+                    href="/warehouse-receipt",
                     class_name="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50",
                 ),
                 class_name="flex gap-1 items-center",

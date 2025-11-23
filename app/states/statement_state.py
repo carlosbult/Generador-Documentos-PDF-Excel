@@ -39,43 +39,15 @@ class StatementState(rx.State):
     provider_address: str = "Av. Principal 1000, Torre A, Piso 5"
     provider_city_state_zip: str = "Caracas, Distrito Capital 1010"
     provider_phone: str = "+58 212 123 4567"
-    client_name: str = "Cliente Ejemplo"
-    client_address: str = "Av. Comercial 456, Edificio Central"
-    client_city: str = "Caracas"
-    client_state: str = "Distrito Capital"
-    client_country: str = "Venezuela"
-    account_number: str = "34829"
-    terms: str = "CONTADO"
-    statement_date: str = datetime.now().strftime("%Y-%m-%d")
-    transactions: list[Transaction] = [
-        Transaction(
-            id="1",
-            date="2025-10-23",
-            invoice_no="146038",
-            reference="NOSGLOBAL",
-            description="WHS: 224033, BULTOS: 1, DESTINATARIO: NOSGLOBAL",
-            amount=154.0,
-            paid=0.0,
-        ),
-        Transaction(
-            id="2",
-            date="2025-10-24",
-            invoice_no="146214",
-            reference="NOSGLOBAL",
-            description="WHS: 223603, BULTOS: 1, DESTINATARIO: NOSGLOBAL",
-            amount=39.5,
-            paid=0.0,
-        ),
-        Transaction(
-            id="3",
-            date="2025-10-24",
-            invoice_no="146277",
-            reference="NOSGLOBAL",
-            description="WHS: 223708, BULTOS: 1, DESTINATARIO: NOSGLOBAL",
-            amount=38.2,
-            paid=0.0,
-        ),
-    ]
+    client_name: str = ""
+    client_address: str = ""
+    client_city: str = ""
+    client_state: str = ""
+    client_country: str = ""
+    account_number: str = ""
+    terms: str = ""
+    statement_date: str = ""
+    transactions: list[Transaction] = []
 
     @rx.event
     def on_load(self):
@@ -93,17 +65,24 @@ class StatementState(rx.State):
         days_30 = 0.0
         days_60 = 0.0
         days_90 = 0.0
-        try:
-            stmt_date = datetime.strptime(self.statement_date, "%Y-%m-%d").date()
-        except ValueError as e:
-            logging.exception(f"Error parsing statement date: {e}")
+
+        # Use today's date if statement_date is empty
+        if not self.statement_date:
             stmt_date = date.today()
-        for t in self.transactions:
+        else:
             try:
-                inv_date = datetime.strptime(t.date, "%Y-%m-%d").date()
-            except ValueError as e:
-                logging.exception(f"Error parsing transaction date: {e}")
+                stmt_date = datetime.strptime(self.statement_date, "%Y-%m-%d").date()
+            except ValueError:
+                stmt_date = date.today()
+
+        for t in self.transactions:
+            if not t.date:
                 inv_date = date.today()
+            else:
+                try:
+                    inv_date = datetime.strptime(t.date, "%Y-%m-%d").date()
+                except ValueError:
+                    inv_date = date.today()
             days_diff = (stmt_date - inv_date).days
             balance = t.amount - t.paid
             if days_diff < 30:
@@ -221,7 +200,7 @@ class StatementState(rx.State):
             elements.append(Spacer(1, 20))
             elements.append(
                 Paragraph(
-                    f"A CONTINUACION LE MOSTRAMOS UNA LISTA DE FACTURAS PENDIENTES DE PAGO A {self.statement_date}",
+                    f"A CONTINUACION LE MOSTRAMOS UNA LISTA DE NOTAS DE ENTREGA PENDIENTES DE PAGO A {self.statement_date}",
                     styles["Normal"],
                 )
             )
@@ -229,7 +208,7 @@ class StatementState(rx.State):
             trans_data = [
                 [
                     "FECHA",
-                    "FACTURA",
+                    "NOTA DE ENTREGA",
                     "CUENTA",
                     "DESCRIPCIÓN",
                     "CANTIDAD",
@@ -349,7 +328,7 @@ class StatementState(rx.State):
             ws["F8"] = self.statement_date
             headers = [
                 "FECHA",
-                "FACTURA",
+                "NOTA DE ENTREGA",
                 "CUENTA",
                 "DESCRIPCIÓN",
                 "CANTIDAD",

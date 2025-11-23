@@ -1,18 +1,18 @@
 import reflex as rx
 from app.components.navbar import navbar
-from app.states.invoice_state import InvoiceState
-from app.components.invoice.form import invoice_form
-from app.components.invoice.preview import invoice_preview
+from app.states.warehouse_receipt_state import WarehouseReceiptState
+from app.components.warehouse_receipt.form import warehouse_receipt_form
+from app.components.warehouse_receipt.preview import warehouse_receipt_preview
 
 
 def action_bar() -> rx.Component:
     return rx.el.div(
         rx.el.div(
             rx.el.h1(
-                "Nota de entrega", class_name="text-2xl font-bold text-gray-900"
+                "Recibo de Almacén", class_name="text-2xl font-bold text-gray-900"
             ),
             rx.el.p(
-                "Edite los detalles y genere su nota de entrega.",
+                "Edite los detalles y genere su recibo de almacén.",
                 class_name="text-sm text-gray-500 mt-1",
             ),
         ),
@@ -20,16 +20,16 @@ def action_bar() -> rx.Component:
             rx.el.button(
                 rx.icon("file-text", class_name="w-4 h-4"),
                 "Exportar PDF",
-                on_click=InvoiceState.export_pdf,
-                disabled=InvoiceState.is_loading,
+                on_click=WarehouseReceiptState.export_pdf,
+                disabled=WarehouseReceiptState.is_loading,
                 class_name="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-sm",
             ),
             rx.el.button(
                 rx.icon("table-2", class_name="w-4 h-4"),
                 "Exportar Excel",
-                on_click=InvoiceState.export_excel,
-                disabled=InvoiceState.is_loading,
-                class_name="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-sm",
+                on_click=WarehouseReceiptState.export_excel,
+                disabled=WarehouseReceiptState.is_loading,
+                class_name="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-sm",
             ),
             class_name="flex gap-3",
         ),
@@ -37,7 +37,7 @@ def action_bar() -> rx.Component:
     )
 
 
-def invoice_page() -> rx.Component:
+def warehouse_receipt_page() -> rx.Component:
     return rx.el.div(
         navbar(),
         rx.el.div(
@@ -45,11 +45,12 @@ def invoice_page() -> rx.Component:
                 action_bar(),
                 rx.el.div(
                     rx.el.div(
-                        invoice_form(),
+                        warehouse_receipt_form(),
                         class_name="w-full lg:w-1/2 overflow-y-auto max-h-[calc(100vh-250px)] custom-scrollbar pr-2",
                     ),
                     rx.el.div(
-                        invoice_preview(), class_name="w-full lg:w-1/2 sticky top-8"
+                        warehouse_receipt_preview(),
+                        class_name="w-full lg:w-1/2 sticky top-8",
                     ),
                     class_name="flex flex-col lg:flex-row gap-8",
                 ),
@@ -58,4 +59,5 @@ def invoice_page() -> rx.Component:
             class_name="min-h-screen bg-gray-50/50",
         ),
         class_name="font-['Inter']",
+        on_mount=WarehouseReceiptState.on_load,
     )

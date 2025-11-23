@@ -73,7 +73,7 @@ def invoice_preview() -> rx.Component:
                 ),
                 rx.el.div(
                     rx.el.h1(
-                        "FACTURA",
+                        "NOTA DE ENTREGA",
                         class_name="text-4xl font-bold text-gray-200 text-right tracking-tight",
                     ),
                     rx.el.div(
@@ -115,7 +115,7 @@ def invoice_preview() -> rx.Component:
             ),
             rx.el.div(
                 rx.el.h3(
-                    "Facturar a:",
+                    "Entregar a:",
                     class_name="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3",
                 ),
                 rx.el.p(

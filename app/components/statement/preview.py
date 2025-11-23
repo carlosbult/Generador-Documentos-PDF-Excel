@@ -93,7 +93,7 @@ def transaction_table_header() -> rx.Component:
             class_name="p-2 text-left text-[10px] font-bold text-gray-800 border-b border-gray-300",
         ),
         rx.el.th(
-            "FACTURA",
+            "NOTA DE ENTREGA",
             class_name="p-2 text-left text-[10px] font-bold text-gray-800 border-b border-gray-300",
         ),
         rx.el.th(
@@ -232,7 +232,7 @@ def statement_preview() -> rx.Component:
             preview_header(),
             client_section(),
             rx.el.div(
-                f"A CONTINUACION LE MOSTRAMOS UNA LISTA DE FACTURAS PENDIENTES DE PAGO A {StatementState.statement_date}",
+                f"A CONTINUACION LE MOSTRAMOS UNA LISTA DE NOTAS DE ENTREGA PENDIENTES DE PAGO A {StatementState.statement_date}",
                 class_name="text-xs font-bold mb-4",
             ),
             rx.el.table(
