@@ -74,7 +74,7 @@ def invoice_preview() -> rx.Component:
                 rx.el.div(
                     rx.el.h1(
                         "NOTA DE ENTREGA",
-                        class_name="text-4xl font-bold text-gray-200 text-right tracking-tight",
+                        class_name="text-xl font-bold text-gray-200 text-right tracking-tight",
                     ),
                     rx.el.div(
                         rx.el.div(

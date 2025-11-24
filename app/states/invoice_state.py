@@ -4,6 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import uuid
 import logging
+from pydantic import BaseModel
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
@@ -13,7 +14,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
 
 
-class InvoiceItem(rx.Base):
+class InvoiceItem(BaseModel):
     id: str
     code: str = ""           # Código/SKU
     description: str
@@ -32,7 +33,7 @@ class InvoiceState(rx.State):
     from_address: str = "Av. Principal 1000, Torre A, Piso 5"
     from_details: str = "Caracas, Distrito Capital, 1010"
     from_email: str = "info@nosglobal.com"
-    from_phone: str = "+58 212 123 4567"
+    from_phone: str = "+58 424-4966616"
     to_name: str = ""
     to_company: str = ""
     to_address: str = ""
@@ -162,7 +163,7 @@ class InvoiceState(rx.State):
                         styles["Normal"],
                     ),
                     Paragraph(
-                        f"<font size=24><b>NOTA DE ENTREGA</b></font><br/><br/><b>No:</b> {self.invoice_number}<br/><b>Fecha:</b> {self.invoice_date}<br/><b>Vence:</b> {self.due_date}",
+                        f"<font size=16><b>NOTA DE ENTREGA</b></font><br/><br/><b>No:</b> {self.invoice_number}<br/><b>Fecha:</b> {self.invoice_date}<br/><b>Vence:</b> {self.due_date}",
                         styles["Normal"],
                     ),
                 ]

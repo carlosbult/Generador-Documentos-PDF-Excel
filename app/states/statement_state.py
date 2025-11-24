@@ -5,6 +5,7 @@ from pathlib import Path
 import uuid
 import os
 import logging
+from pydantic import BaseModel
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import (
@@ -21,7 +22,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 
 
-class Transaction(rx.Base):
+class Transaction(BaseModel):
     id: str
     date: str
     invoice_no: str
@@ -38,7 +39,7 @@ class StatementState(rx.State):
     provider_name: str = "Nosglobal Logistic"
     provider_address: str = "Av. Principal 1000, Torre A, Piso 5"
     provider_city_state_zip: str = "Caracas, Distrito Capital 1010"
-    provider_phone: str = "+58 212 123 4567"
+    provider_phone: str = "+58 424-4966616"
     client_name: str = ""
     client_address: str = ""
     client_city: str = ""

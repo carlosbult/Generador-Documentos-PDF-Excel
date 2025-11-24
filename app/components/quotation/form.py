@@ -60,7 +60,7 @@ def item_row(item: QuotationItem, index: int) -> rx.Component:
                 default_value=item.description,
                 placeholder="Servicio de logística",
             ),
-            class_name="col-span-2",
+            class_name="col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-3",
         ),
         # Quantity
         rx.el.div(
@@ -127,9 +127,9 @@ def item_row(item: QuotationItem, index: int) -> rx.Component:
                 default_value=item.notes,
                 placeholder="Nota opcional",
             ),
-            class_name="col-span-2",
+            class_name="col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-4",
         ),
-        class_name="grid grid-cols-[auto_2fr_1fr_1fr_1fr_1fr_2fr] gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
+        class_name="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
     )
 
 
@@ -188,7 +188,7 @@ def quotation_form() -> rx.Component:
                     "client_address",
                     placeholder="Av. Principal, Caracas",
                 ),
-                class_name="grid grid-cols-1 gap-4 mb-4",
+                class_name="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4",
             ),
             rx.el.div(
                 input_group(
@@ -203,7 +203,7 @@ def quotation_form() -> rx.Component:
                     QuotationState.client_phone,
                     "client_phone",
                     "tel",
-                    placeholder="+58 212 123 4567",
+                    placeholder="+58 424-4966616",
                 ),
                 class_name="grid grid-cols-2 gap-4 mb-6",
             ),
