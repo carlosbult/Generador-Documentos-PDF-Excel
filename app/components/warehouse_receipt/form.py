@@ -129,7 +129,7 @@ def dimension_row(dimension: PackageDimension, index: int) -> rx.Component:
                 default_value=dimension.referencia,
             ),
         ),
-        class_name="grid grid-cols-[auto_repeat(8,1fr)] gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
+        class_name="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-9 gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
     )
 
 
@@ -158,56 +158,56 @@ def warehouse_receipt_form() -> rx.Component:
             ),
             class_name="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mb-6",
         ),
-        rx.el.div(
-            # Summary section (read-only calculated fields)
-            form_header("Resumen de Paquete", "package"),
-            rx.el.div(
-                rx.el.div(
-                    rx.el.label(
-                        "Total Bultos",
-                        class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
-                    ),
-                    rx.el.div(
-                        WarehouseReceiptState.total_bultos.to_string(),
-                        class_name="px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg text-sm font-bold text-orange-700",
-                    ),
-                ),
-                rx.el.div(
-                    rx.el.label(
-                        "Peso Bruto (lbs)",
-                        class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
-                    ),
-                    rx.el.div(
-                        rx.text(
-                            WarehouseReceiptState.calculated_peso_bruto,
-                            format_string=",.2f",
-                        ),
-                        class_name="px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg text-sm font-bold text-orange-700",
-                    ),
-                ),
-                rx.el.div(
-                    rx.el.label(
-                        "Volumen (ft³)",
-                        class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
-                    ),
-                    rx.el.div(
-                        rx.text(
-                            WarehouseReceiptState.calculated_volumen,
-                            format_string=",.3f",
-                        ),
-                        class_name="px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg text-sm font-bold text-orange-700",
-                    ),
-                ),
-                input_group(
-                    "Peso Tasable (lbs)",
-                    WarehouseReceiptState.peso_tasable.to_string(),
-                    "peso_tasable",
-                    "number",
-                ),
-                class_name="grid grid-cols-4 gap-4 mb-6",
-            ),
-            class_name="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mb-6",
-        ),
+        # rx.el.div(
+        #     # Summary section (read-only calculated fields)
+        #     form_header("Resumen de Paquete", "package"),
+        #     rx.el.div(
+        #         rx.el.div(
+        #             rx.el.label(
+        #                 "Total Bultos",
+        #                 class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
+        #             ),
+        #             rx.el.div(
+        #                 WarehouseReceiptState.total_bultos.to_string(),
+        #                 class_name="px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg text-sm font-bold text-orange-700",
+        #             ),
+        #         ),
+        #         rx.el.div(
+        #             rx.el.label(
+        #                 "Peso Bruto (lbs)",
+        #                 class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
+        #             ),
+        #             rx.el.div(
+        #                 rx.text(
+        #                     WarehouseReceiptState.calculated_peso_bruto,
+        #                     format_string=",.2f",
+        #                 ),
+        #                 class_name="px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg text-sm font-bold text-orange-700",
+        #             ),
+        #         ),
+        #         rx.el.div(
+        #             rx.el.label(
+        #                 "Volumen (ft³)",
+        #                 class_name="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide",
+        #             ),
+        #             rx.el.div(
+        #                 rx.text(
+        #                     WarehouseReceiptState.calculated_volumen,
+        #                     format_string=",.3f",
+        #                 ),
+        #                 class_name="px-3 py-2 bg-orange-50 border border-orange-200 rounded-lg text-sm font-bold text-orange-700",
+        #             ),
+        #         ),
+        #         input_group(
+        #             "Peso Tasable (lbs)",
+        #             WarehouseReceiptState.peso_tasable.to_string(),
+        #             "peso_tasable",
+        #             "number",
+        #         ),
+        #         class_name="grid grid-cols-4 gap-4 mb-6",
+        #     ),
+        #     class_name="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mb-6",
+        # ),
         rx.el.div(
             # Details section
             form_header("Detalles del Envío", "info"),

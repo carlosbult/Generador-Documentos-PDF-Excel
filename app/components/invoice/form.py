@@ -55,7 +55,7 @@ def item_row(item: InvoiceItem, index: int) -> rx.Component:
                 class_name="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm",
                 default_value=item.description,
             ),
-            class_name="col-span-3",
+            class_name="col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-3",
         ),
         rx.el.div(
             rx.el.label("Cant.", class_name="text-xs font-medium text-gray-500 mb-1"),
@@ -92,7 +92,7 @@ def item_row(item: InvoiceItem, index: int) -> rx.Component:
                 class_name="px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-right font-medium text-gray-700",
             ),
         ),
-        class_name="grid grid-cols-[auto_1fr_3fr_1fr_1fr_1fr_1.5fr] gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
+        class_name="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 items-start p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all",
     )
 
 
@@ -160,7 +160,7 @@ def invoice_form() -> rx.Component:
                 input_group(
                     "Fecha Vencimiento", InvoiceState.due_date, "due_date", "date"
                 ),
-                class_name="grid grid-cols-2 gap-4",
+                class_name="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4",
             ),
             class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200",
         ),
@@ -176,7 +176,7 @@ def invoice_form() -> rx.Component:
                 input_group(
                     "Cuenta Bancaria", InvoiceState.bank_account, "bank_account", placeholder="0102-0000-0000-0000-1234"
                 ),
-                class_name="grid grid-cols-1 gap-4",
+                class_name="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
             ),
             class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200",
         ),

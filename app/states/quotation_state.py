@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import reflex as rx
+from pydantic import BaseModel
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from reportlab.lib import colors
@@ -15,7 +16,7 @@ from reportlab.lib.units import inch
 from reportlab.platypus import Image, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 
-class QuotationItem(rx.Base):
+class QuotationItem(BaseModel):
     """Model for quotation line items."""
 
     id: str
@@ -36,7 +37,7 @@ class QuotationState(rx.State):
     company_name: str = "Nosglobal Logistic"
     company_logo_url: str = "/nosglobal-logo.png"
     company_address: str = "Miami, FL"
-    company_phone: str = "+1 (305) 123-4567"
+    company_phone: str = "+58 424-4966616"
     company_email: str = "info@nosglobal.com"
 
     # Quotation details

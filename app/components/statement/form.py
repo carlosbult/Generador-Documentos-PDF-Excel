@@ -57,13 +57,16 @@ def transaction_row(transaction: Transaction, index: int) -> rx.Component:
                 lambda v: StatementState.update_transaction(index, "invoice_no", v),
                 placeholder="146038",
             ),
-            class_name="grid grid-cols-2 gap-2",
+            class_name="grid grid-cols-2 gap-2 col-span-2 md:col-span-2 lg:col-span-2",
         ),
-        input_field(
-            "Descripción",
-            transaction.description,
-            lambda v: StatementState.update_transaction(index, "description", v),
-            placeholder="WHS: 224033, BULTOS: 1, DESTINATARIO: NOSGLOBAL",
+        rx.el.div(
+            input_field(
+                "Descripción",
+                transaction.description,
+                lambda v: StatementState.update_transaction(index, "description", v),
+                placeholder="WHS: 224033, BULTOS: 1, DESTINATARIO: NOSGLOBAL",
+            ),
+            class_name="col-span-3 md:col-span-3 lg:col-span-3",
         ),
         rx.el.div(
             input_field(
@@ -80,9 +83,9 @@ def transaction_row(transaction: Transaction, index: int) -> rx.Component:
                 type_="number",
                 placeholder="0.00",
             ),
-            class_name="grid grid-cols-2 gap-2",
+            class_name="grid grid-cols-2 gap-2 col-span-3 md:col-span-3 lg:col-span-2",
         ),
-        class_name="grid grid-cols-[auto_2fr_3fr_2fr] gap-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow items-start",
+        class_name="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow items-start",
     )
 
 
@@ -176,7 +179,7 @@ def statement_form() -> rx.Component:
                     lambda v: StatementState.set_field("statement_date", v),
                     type_="date",
                 ),
-                class_name="grid grid-cols-1 md:grid-cols-3 gap-4",
+                class_name="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
             ),
             class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-6",
         ),

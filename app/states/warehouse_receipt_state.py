@@ -4,6 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import uuid
 import logging
+from pydantic import BaseModel
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
@@ -13,7 +14,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 
 
-class PackageDimension(rx.Base):
+class PackageDimension(BaseModel):
     id: str
     bultos: int = 1
     largo: float = 0.0  # Length in inches
