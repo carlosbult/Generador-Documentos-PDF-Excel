@@ -306,7 +306,10 @@ def dimensions_table() -> rx.Component:
                 )
             ),
             rx.el.tbody(
-                rx.foreach(WarehouseReceiptState.dimensions, dimension_table_row)
+                rx.foreach(
+                    WarehouseReceiptState.dimensions,
+                    lambda dim: rx.fragment(dimension_table_row(dim), key=dim.id),
+                )
             ),
             class_name="w-full border-collapse mb-6",
         ),

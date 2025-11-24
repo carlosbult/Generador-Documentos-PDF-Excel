@@ -215,7 +215,10 @@ def quotation_form() -> rx.Component:
             rx.el.div(
                 rx.foreach(
                     QuotationState.items,
-                    lambda item, idx: item_row(item, idx),
+                    lambda item, idx: rx.box(
+                        item_row(item, idx),
+                        key=item.id,
+                    ),
                 ),
                 class_name="space-y-3 mb-4",
             ),
