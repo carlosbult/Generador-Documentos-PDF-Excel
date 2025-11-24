@@ -213,7 +213,10 @@ def warehouse_receipt_form() -> rx.Component:
             rx.el.div(
                 rx.foreach(
                     WarehouseReceiptState.dimensions,
-                    lambda dim, idx: dimension_row(dim, idx),
+                    lambda dim, idx: rx.box(
+                        dimension_row(dim, idx),
+                        key=dim.id,
+                    ),
                 ),
                 class_name="space-y-3 mb-4",
             ),

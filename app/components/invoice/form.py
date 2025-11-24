@@ -225,7 +225,13 @@ def invoice_form() -> rx.Component:
                 class_name="flex justify-between items-center mb-4",
             ),
             rx.el.div(
-                rx.foreach(InvoiceState.items, lambda item, idx: item_row(item, idx)),
+                rx.foreach(
+                    InvoiceState.items,
+                    lambda item, idx: rx.box(
+                        item_row(item, idx),
+                        key=item.id,
+                    ),
+                ),
                 class_name="space-y-3",
             ),
             class_name="bg-white p-6 rounded-2xl shadow-sm border border-gray-200",

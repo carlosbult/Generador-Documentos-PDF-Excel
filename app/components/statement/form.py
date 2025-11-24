@@ -196,7 +196,11 @@ def statement_form() -> rx.Component:
             ),
             rx.el.div(
                 rx.foreach(
-                    StatementState.transactions, lambda t, i: transaction_row(t, i)
+                    StatementState.transactions,
+                    lambda t, i: rx.box(
+                        transaction_row(t, i),
+                        key=t.id,
+                    ),
                 ),
                 class_name="space-y-3",
             ),
