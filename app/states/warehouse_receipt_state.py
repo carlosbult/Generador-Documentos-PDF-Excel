@@ -63,7 +63,7 @@ class WarehouseReceiptState(rx.State):
     legal_disclaimer: str = (
         "Nuestra empresa no se hace responsable por pérdida o daños totales y/o parciales de mercancía "
         "que NO SE ENCUENTRE ASEGURADA. El seguro únicamente aplicará bajo previa inspección de "
-        "los artículos y aprobación de los mismos. Igualmente, Poder Logistic no se hace responsable de "
+        "los artículos y aprobación de los mismos. Igualmente, Nosglobal Logistic no se hace responsable de "
         "paquetes perdidos en tránsito desde su proveedor hasta nuestros almacenes, ni de paquetes que "
         "no contengan el servicio de firma requerida. Por tal razón, recomendamos que sus envíos sean "
         "manejados por empresas que puedan proveerle un número de rastreo (tracking) para de este "
