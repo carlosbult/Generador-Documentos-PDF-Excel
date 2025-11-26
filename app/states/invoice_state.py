@@ -110,6 +110,8 @@ class InvoiceState(rx.State):
     def remove_item(self, idx: int):
         if 0 <= idx < len(self.items):
             self.items.pop(idx)
+            # Create a new list to ensure Reflex detects the change correctly
+            self.items = list(self.items)
 
     @rx.event
     def update_item(self, idx: int, field: str, value: Any):
@@ -117,7 +119,11 @@ class InvoiceState(rx.State):
             item = self.items[idx]
             if field in ["quantity", "unit_price", "discount"]:
                 try:
-                    val = float(value)
+                    if value == "" or value is None:
+                        val = 0.0
+                    else:
+                        val = float(value)
+
                     if field == "quantity":
                         item.quantity = int(val)
                     elif field == "unit_price":
@@ -127,16 +133,21 @@ class InvoiceState(rx.State):
                     # Recalculate amount with discount
                     item.amount = item.quantity * (item.unit_price - item.discount)
                 except ValueError as e:
-                    logging.exception(f"Error updating item field {field}: {e}")
+                    logging.warning(f"Invalid value for field {field}: {value}")
             elif field in ["description", "code", "tax_rate"]:
                 if field == "tax_rate":
                     try:
-                        item.tax_rate = float(value)
+                        if value == "" or value is None:
+                            item.tax_rate = 0.0
+                        else:
+                            item.tax_rate = float(value)
                     except ValueError as e:
-                        logging.exception(f"Error updating item field {field}: {e}")
+                        logging.warning(f"Invalid value for field {field}: {value}")
                 else:
                     setattr(item, field, str(value))
-            self.items = self.items
+            
+            # Create a new list to ensure Reflex detects the change correctly
+            self.items = list(self.items)
 
     @rx.event
     async def export_pdf(self):

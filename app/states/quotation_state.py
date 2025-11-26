@@ -151,6 +151,8 @@ class QuotationState(rx.State):
         """Remove an item from the quotation."""
         if 0 <= idx < len(self.items):
             self.items.pop(idx)
+            # Create a new list to ensure Reflex detects the change correctly
+            self.items = list(self.items)
 
     @rx.event
     def update_item(self, idx: int, field: str, value: str):

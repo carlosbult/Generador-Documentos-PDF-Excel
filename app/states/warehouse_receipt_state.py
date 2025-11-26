@@ -123,7 +123,8 @@ class WarehouseReceiptState(rx.State):
     def remove_dimension(self, idx: int):
         if 0 <= idx < len(self.dimensions):
             self.dimensions.pop(idx)
-            self.dimensions = self.dimensions
+            # Create a new list to ensure Reflex detects the change correctly
+            self.dimensions = list(self.dimensions)
 
     @rx.event
     def update_dimension(self, idx: int, field: str, value: Any):
@@ -131,7 +132,11 @@ class WarehouseReceiptState(rx.State):
             dimension = self.dimensions[idx]
             if field in ["bultos", "largo", "ancho", "alto", "pounds", "pt"]:
                 try:
-                    val = float(value)
+                    if value == "" or value is None:
+                        val = 0.0
+                    else:
+                        val = float(value)
+                    
                     if field == "bultos":
                         dimension.bultos = int(val)
                     elif field == "largo":
@@ -150,12 +155,19 @@ class WarehouseReceiptState(rx.State):
                         dimension.cubic_feet = (
                             dimension.largo * dimension.ancho * dimension.alto
                         ) / 1728  # Convert cubic inches to cubic feet
+                    else:
+                        dimension.cubic_feet = 0.0
+                        
                 except ValueError as e:
-                    logging.exception(f"Error updating dimension field {field}: {e}")
+                    logging.warning(f"Invalid value for field {field}: {value}")
+                    # Don't update state on invalid input to prevent UI glitches,
+                    # but allow the user to correct it.
             elif field == "referencia":
                 dimension.referencia = str(value)
 
-            self.dimensions = self.dimensions
+            # Create a new list to ensure Reflex detects the change correctly
+            # This is critical to prevent "NotFoundError: removeChild" errors
+            self.dimensions = list(self.dimensions)
 
     @rx.event
     async def export_pdf(self):

@@ -120,19 +120,26 @@ class StatementState(rx.State):
             transaction = self.transactions[idx]
             if field in ["amount", "paid"]:
                 try:
-                    setattr(transaction, field, float(value))
+                    if value == "" or value is None:
+                        val = 0.0
+                    else:
+                        val = float(value)
+                    setattr(transaction, field, val)
                 except ValueError as e:
-                    logging.exception(f"Error converting value to float: {e}")
-                    setattr(transaction, field, 0.0)
+                    logging.warning(f"Invalid value for field {field}: {value}")
+                    # Don't update state on invalid input
             else:
                 setattr(transaction, field, value)
-            self.transactions = self.transactions
+            
+            # Create a new list to ensure Reflex detects the change correctly
+            self.transactions = list(self.transactions)
 
     @rx.event
     def remove_transaction(self, idx: int):
         if 0 <= idx < len(self.transactions):
             self.transactions.pop(idx)
-            self.transactions = self.transactions
+            # Create a new list to ensure Reflex detects the change correctly
+            self.transactions = list(self.transactions)
 
     @rx.event
     async def export_pdf(self):
